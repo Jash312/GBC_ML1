@@ -4,8 +4,9 @@
 import os
 import requests
 import re
+import sys
 # Code here - Import BeautifulSoup library
-
+from bs4 import BeautifulSoup
 # Code ends here
 
 # function to get the html source text of the medium article
@@ -13,7 +14,7 @@ def get_page():
 	global url
 	
 	# Code here - Ask the user to input "Enter url of a medium article: " and collect it in url
-	
+	url = input("Enter url of a medium article:")
 	# Code ends here
 	
 	# handling possible error
@@ -22,7 +23,7 @@ def get_page():
 		sys.exit(1)
 
 	# Code here - Call get method in requests object, pass url and collect it in res
-	
+	res = requests.get(url)
 	# Code ends here
 
 	res.raise_for_status()
@@ -56,7 +57,9 @@ def save_file(text):
 	fname = f'scraped_articles/{name}.txt'
 	
 	# Code here - write a file using with (2 lines)
-	
+	with open(fname, "w") as file:
+		# Write content to the file
+		file.write(text)
 
 	# Code ends here
 
@@ -64,7 +67,7 @@ def save_file(text):
 
 
 if __name__ == '__main__':
-	text = collect_text(get_page())
+	text = clean(collect_text(get_page()))
 	save_file(text)
 	# Instructions to Run this python code
 	# Give url as https://medium.com/@subashgandyer/papa-what-is-a-neural-network-c5e5cc427c7
